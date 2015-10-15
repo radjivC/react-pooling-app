@@ -50,18 +50,21 @@
 	var Router = __webpack_require__(157);
 	var Route = Router.Route;
 	var DefaultRoute = Router.DefaultRoute;
+	var NotFoundRoute = Router.NotFoundRoute;
 
 	var APP = __webpack_require__(196);
 	var Audience = __webpack_require__(248);
 	var Speaker = __webpack_require__(249);
 	var Board = __webpack_require__(250);
+	var Whoops404 = __webpack_require__(251);
 
 	var routes = React.createElement(
 	  Route,
 	  { handler: APP },
 	  React.createElement(DefaultRoute, { handler: Audience }),
 	  React.createElement(Route, { name: 'speaker', path: 'speaker', handler: Speaker }),
-	  React.createElement(Route, { name: 'board', path: 'board', handler: Board })
+	  React.createElement(Route, { name: 'board', path: 'board', handler: Board }),
+	  React.createElement(NotFoundRoute, { handler: Whoops404 })
 	);
 
 	Router.run(routes, function (Handler) {
@@ -23566,7 +23569,8 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      status: 'disconnected',
-	      title: ''
+	      title: '',
+	      dance: 'yes please'
 	    };
 	  },
 
@@ -23594,7 +23598,7 @@
 	      'div',
 	      null,
 	      React.createElement(Header, { title: this.state.title, status: this.state.status }),
-	      React.createElement(RouteHandler, null)
+	      React.createElement(RouteHandler, this.state)
 	    );
 	  }
 	});
@@ -30852,7 +30856,8 @@
 	    return React.createElement(
 	      'h1',
 	      null,
-	      'Audience'
+	      'Audience: ',
+	      this.props.title
 	    );
 	  }
 	});
@@ -30874,7 +30879,8 @@
 	    return React.createElement(
 	      'h1',
 	      null,
-	      'Speaker'
+	      'Speaker : ',
+	      this.props.status
 	    );
 	  }
 	});
@@ -30896,12 +30902,62 @@
 	    return React.createElement(
 	      'h1',
 	      null,
-	      'Board'
+	      'Board: ',
+	      this.props.dance
 	    );
 	  }
 	});
 
 	module.exports = Board;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Router = __webpack_require__(157);
+
+	var Link = Router.Link;
+
+	var Whoops404 = React.createClass({
+	  displayName: 'Whoops404',
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Whoops ...'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'We connot find the page that you have requested Were you looking for one of these:'
+	      ),
+	      React.createElement(
+	        Link,
+	        { to: '/' },
+	        ' Join as Audience'
+	      ),
+	      React.createElement(
+	        Link,
+	        { to: '/speaker' },
+	        ' Start the Presentation'
+	      ),
+	      React.createElement(
+	        Link,
+	        { to: '/board' },
+	        ' View the board'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Whoops404;
 
 /***/ }
 /******/ ]);
