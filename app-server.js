@@ -7,7 +7,6 @@ var title = "Untitled Presentation";
 var audience = [];
 var speaker = {};
 
-
 app.use(express.static('./public'));
 app.use(express.static('./node_modules/bootstrap/dist'));
 
@@ -44,15 +43,19 @@ io.sockets.on('connection', function(socket){
   });
 
   socket.on('start', function(payload){
-    speaker.name =payload.name;
+    speaker.name = payload.name
     speaker.id = this.id;
     speaker.type = 'speaker';
-    this.emit('joined',speaker);
-    console.log("Presentation started '%s' by  %s", title, speaker.name);
+    title = payload.title;
+    this.emit('joined', speaker);
+    io.sockets.emit('start', { title: title, speaker: speaker.name });
+    console.log("Presentation Started: '%s' by %s", title, speaker.name);
   });
 
   socket.emit('welcome', {
-    title: title
+    title: title,
+    audience: audience,
+    speaker: speaker.name
   });
 
   connections.push(socket);
